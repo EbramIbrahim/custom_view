@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -23,6 +24,7 @@ fun DrawingCanvas(
     paths: List<PathData>,
     currentPath: PathData?,
     onAction: (DrawingAction) -> Unit,
+    imageBitmap: ImageBitmap,
     modifier: Modifier = Modifier
 ) {
 
@@ -47,6 +49,11 @@ fun DrawingCanvas(
                 )
             }
     ) {
+
+        drawImage(
+            image = imageBitmap
+        )
+
         paths.fastForEach { pathData ->
             drawPath(
                 path = pathData.paths,
