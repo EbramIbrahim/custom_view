@@ -1,4 +1,4 @@
-package com.example.customview
+package com.example.customview.edit_screen
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -7,10 +7,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+enum class DrawingMode {
+    BRUSH, ERASER
+}
+
 data class DrawingState(
     val selectedColor: Color = Color.Black,
     val currentPath: PathData? = null,
-    val paths: List<PathData> = emptyList()
+    val paths: List<PathData> = emptyList(),
+    val rotation: Float = 0f,
+    val drawingMode: DrawingMode = DrawingMode.BRUSH
 )
 
 data class PathData(
@@ -36,6 +42,8 @@ sealed interface DrawingAction {
     data object OnPathEnd : DrawingAction
     data class OnSelectColor(val color: Color) : DrawingAction
     data object OnClearCanvasClick : DrawingAction
+    data class OnRotationChanged(val rotation: Float): DrawingAction
+    data class OnDrawModeChanged(val mode: DrawingMode): DrawingAction
 }
 
 class DrawingViewModel : ViewModel() {
@@ -52,7 +60,17 @@ class DrawingViewModel : ViewModel() {
             DrawingAction.OnNewPathStart -> onNewPathStart()
             DrawingAction.OnPathEnd -> onPathEnd()
             is DrawingAction.OnSelectColor -> onSelectColor(action.color)
+            is DrawingAction.OnRotationChanged -> onRotationChanged(action.rotation)
+            is DrawingAction.OnDrawModeChanged -> onDrawModeChanged(action.mode)
         }
+    }
+
+    private fun onDrawModeChanged(mode: DrawingMode) {
+        _drawingState.update { it.copy(drawingMode = mode) }
+    }
+
+    private fun onRotationChanged(rotation: Float) {
+        _drawingState.update { it.copy(rotation = rotation) }
     }
 
     private fun onSelectColor(color: Color) {

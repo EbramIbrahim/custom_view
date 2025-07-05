@@ -1,4 +1,4 @@
-package com.example.customview
+package com.example.customview.edit_screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.util.fastForEach
 import kotlin.math.abs
@@ -25,7 +26,8 @@ fun DrawingCanvas(
     currentPath: PathData?,
     onAction: (DrawingAction) -> Unit,
     imageBitmap: ImageBitmap,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    rotation: Float
 ) {
 
     Canvas(
@@ -50,9 +52,16 @@ fun DrawingCanvas(
             }
     ) {
 
-        drawImage(
-            image = imageBitmap
-        )
+        rotate(rotation, pivot = center) {
+            drawImage(
+                image = imageBitmap,
+                topLeft = Offset(
+                    (size.width - imageBitmap.width) / 2,
+                    (size.height - imageBitmap.height) / 2
+                )
+            )
+        }
+
 
         paths.fastForEach { pathData ->
             drawPath(

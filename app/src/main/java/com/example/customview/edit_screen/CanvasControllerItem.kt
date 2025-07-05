@@ -1,4 +1,4 @@
-package com.example.customview
+package com.example.customview.edit_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,6 +28,7 @@ fun ColumnScope.CanvasControllerItem(
     allColors: List<Color>,
     onSelectedColor: (Color) -> Unit,
     onCanvasCleared: () -> Unit,
+    onImageRotated: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -60,13 +61,29 @@ fun ColumnScope.CanvasControllerItem(
         }
     }
 
-    Button(
-        onClick = {
-            onCanvasCleared()
-        }
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally)
     ) {
-        Text("Clear Canvas")
+        Button(
+            onClick = {
+                onCanvasCleared()
+            }
+        ) {
+            Text("Clear Canvas")
+        }
+
+        Button(
+            onClick = {
+                onImageRotated()
+            }
+        ) {
+            Text("Rotate")
+        }
     }
+
 
 }
 
