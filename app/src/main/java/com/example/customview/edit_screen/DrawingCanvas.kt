@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
@@ -15,8 +17,13 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.layer.drawLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.util.fastForEach
+import com.example.customview.utils.BitmapUtil
 import kotlin.math.abs
 
 
@@ -30,6 +37,8 @@ fun DrawingCanvas(
     rotation: Float
 ) {
 
+    val combinedBitmap = imageBitmap
+    val context = LocalContext.current
     Canvas(
         modifier = modifier
             .clipToBounds()
@@ -42,7 +51,7 @@ fun DrawingCanvas(
                     onDragEnd = {
                         onAction(DrawingAction.OnPathEnd)
                     },
-                    onDrag = {change, _ ->
+                    onDrag = { change, _ ->
                         onAction(DrawingAction.OnDraw(change.position))
                     },
                     onDragCancel = {
@@ -54,14 +63,13 @@ fun DrawingCanvas(
 
         rotate(rotation, pivot = center) {
             drawImage(
-                image = imageBitmap,
+                image = combinedBitmap,
                 topLeft = Offset(
                     (size.width - imageBitmap.width) / 2,
                     (size.height - imageBitmap.height) / 2
                 )
             )
         }
-
 
         paths.fastForEach { pathData ->
             drawPath(
@@ -78,10 +86,6 @@ fun DrawingCanvas(
     }
 
 }
-
-
-
-
 
 
 private fun DrawScope.drawPath(
@@ -112,6 +116,7 @@ private fun DrawScope.drawPath(
         }
     }
     drawPath(
+        blendMode = BlendMode.Clear,
         path = smoothedPath,
         color = color,
         style = Stroke(

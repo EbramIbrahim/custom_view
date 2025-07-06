@@ -5,7 +5,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.customview.crop_screen.CropperScreen
 import com.example.customview.EditorScreen
 
 
@@ -19,7 +18,7 @@ fun SetupNavHost() {
         startDestination = Screen.CropperScreen
     ) {
         composable<Screen.CropperScreen> {
-            CropperScreen(navController = navController)
+
         }
         composable<Screen.EditorScreen> {  backStackEntry ->
             val editorScreen = backStackEntry.toRoute<Screen.EditorScreen>()
