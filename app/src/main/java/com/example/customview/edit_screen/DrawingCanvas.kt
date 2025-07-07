@@ -25,15 +25,12 @@ fun DrawingCanvas(
     paths: List<PathData>,
     currentPath: PathData?,
     onAction: (DrawingAction) -> Unit,
-    imageBitmap: ImageBitmap,
     modifier: Modifier = Modifier,
-    rotation: Float
 ) {
 
     Canvas(
         modifier = modifier
             .clipToBounds()
-            .background(Color.White)
             .pointerInput(true) {
                 detectDragGestures(
                     onDragStart = {
@@ -51,17 +48,6 @@ fun DrawingCanvas(
                 )
             }
     ) {
-
-        rotate(rotation, pivot = center) {
-            drawImage(
-                image = imageBitmap,
-                topLeft = Offset(
-                    (size.width - imageBitmap.width) / 2,
-                    (size.height - imageBitmap.height) / 2
-                )
-            )
-        }
-
 
         paths.fastForEach { pathData ->
             drawPath(
@@ -87,7 +73,7 @@ fun DrawingCanvas(
 private fun DrawScope.drawPath(
     path: List<Offset>,
     color: Color,
-    thickness: Float = 10f
+    thickness: Float = 20f
 ) {
     val smoothedPath = Path().apply {
         if (path.isNotEmpty()) {

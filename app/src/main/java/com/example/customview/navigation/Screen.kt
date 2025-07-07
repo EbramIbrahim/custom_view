@@ -10,5 +10,5 @@ interface Screen {
     data object CropperScreen: Screen
 
     @Serializable
-    data class EditorScreen(val croppedPhoto: String): Screen
+    data object EditorScreen: Screen
 }

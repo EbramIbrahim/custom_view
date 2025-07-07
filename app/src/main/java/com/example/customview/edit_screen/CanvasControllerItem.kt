@@ -80,7 +80,7 @@ fun ColumnScope.CanvasControllerItem(
                 onImageRotated()
             }
         ) {
-            Text("Rotate")
+            Text("Save Image")
         }
     }
 

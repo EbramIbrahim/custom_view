@@ -16,14 +16,14 @@ fun SetupNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.CropperScreen
+        startDestination = Screen.EditorScreen
     ) {
         composable<Screen.CropperScreen> {
             CropperScreen(navController = navController)
         }
         composable<Screen.EditorScreen> {  backStackEntry ->
-            val editorScreen = backStackEntry.toRoute<Screen.EditorScreen>()
-            EditorScreen(croppedImage = editorScreen.croppedPhoto)
+//            val editorScreen = backStackEntry.toRoute<Screen.EditorScreen>()
+            EditorScreen()
         }
 
     }

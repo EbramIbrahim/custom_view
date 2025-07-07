@@ -38,7 +38,7 @@ fun CropperScreen(navController: NavController) {
                 uri = imageUri!!,
                 onCropDone = {
                     val croppedPhoto = it.toString()
-                    navController.navigate(Screen.EditorScreen(croppedPhoto))
+//                    navController.navigate(Screen.EditorScreen(croppedPhoto))
                 },
                 onNotAbleToCrop = {},
                 onBackPressed = {}
