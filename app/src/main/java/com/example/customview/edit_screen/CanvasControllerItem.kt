@@ -28,7 +28,8 @@ fun ColumnScope.CanvasControllerItem(
     allColors: List<Color>,
     onSelectedColor: (Color) -> Unit,
     onCanvasCleared: () -> Unit,
-    onImageRotated: () -> Unit,
+    onImageSaved: () -> Unit,
+    onChangeDrawingMode: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -41,17 +42,12 @@ fun ColumnScope.CanvasControllerItem(
             val isSelected = selectedColor == color
             Box(
                 modifier = Modifier
-                    .graphicsLayer {
-                        val scale = if (isSelected) 1.2f else 1f
-                        scaleX = scale
-                        scaleY = scale
-                    }
                     .size(40.dp)
                     .clip(CircleShape)
                     .background(color)
                     .border(
                         width = 2.dp,
-                        color = if (isSelected) Color.Black else Color.Transparent
+                        color = if (isSelected) Color.White else Color.Transparent
                     )
                     .clickable {
                         onSelectedColor(color)
@@ -77,10 +73,18 @@ fun ColumnScope.CanvasControllerItem(
 
         Button(
             onClick = {
-                onImageRotated()
+                onImageSaved()
             }
         ) {
             Text("Save Image")
+        }
+
+        Button(
+            onClick = {
+                onChangeDrawingMode()
+            }
+        ) {
+            Text("Eraser")
         }
     }
 

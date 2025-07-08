@@ -25,6 +25,7 @@ fun DrawingCanvas(
     paths: List<PathData>,
     currentPath: PathData?,
     onAction: (DrawingAction) -> Unit,
+    drawingMode: DrawingMode,
     modifier: Modifier = Modifier,
 ) {
 
@@ -39,7 +40,7 @@ fun DrawingCanvas(
                     onDragEnd = {
                         onAction(DrawingAction.OnPathEnd)
                     },
-                    onDrag = {change, _ ->
+                    onDrag = { change, _ ->
                         onAction(DrawingAction.OnDraw(change.position))
                     },
                     onDragCancel = {
@@ -52,13 +53,15 @@ fun DrawingCanvas(
         paths.fastForEach { pathData ->
             drawPath(
                 path = pathData.paths,
-                color = pathData.color
+                color = pathData.color,
+                drawingMode = drawingMode
             )
         }
         currentPath?.let {
             drawPath(
                 path = it.paths,
-                color = it.color
+                color = it.color,
+                drawingMode = drawingMode
             )
         }
     }
@@ -66,14 +69,11 @@ fun DrawingCanvas(
 }
 
 
-
-
-
-
 private fun DrawScope.drawPath(
     path: List<Offset>,
     color: Color,
-    thickness: Float = 20f
+    thickness: Float = 20f,
+    drawingMode: DrawingMode
 ) {
     val smoothedPath = Path().apply {
         if (path.isNotEmpty()) {
@@ -97,15 +97,27 @@ private fun DrawScope.drawPath(
             }
         }
     }
-    drawPath(
-        path = smoothedPath,
-        color = color,
-        style = Stroke(
-            width = thickness,
-            cap = StrokeCap.Round,
-            join = StrokeJoin.Round
+    if (drawingMode == DrawingMode.ERASER) {
+        drawPath(
+            path = smoothedPath,
+            color = Color.Transparent,
+            style = Stroke(
+                width = thickness,
+                cap = StrokeCap.Round,
+                join = StrokeJoin.Round
+            )
         )
-    )
+    } else {
+        drawPath(
+            path = smoothedPath,
+            color = color,
+            style = Stroke(
+                width = thickness,
+                cap = StrokeCap.Round,
+                join = StrokeJoin.Round
+            )
+        )
+    }
 }
 
 

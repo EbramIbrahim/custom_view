@@ -28,7 +28,8 @@ fun DrawingSection(modifier: Modifier = Modifier) {
             paths = state.value.paths,
             currentPath = state.value.currentPath,
             onAction = viewModel::onAction,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            drawingMode = state.value.drawingMode
         )
 
     }

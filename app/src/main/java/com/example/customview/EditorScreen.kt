@@ -2,7 +2,6 @@ package com.example.customview
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -17,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.customview.edit_screen.CanvasControllerItem
 import com.example.customview.edit_screen.DrawingAction
+import com.example.customview.edit_screen.DrawingMode
 import com.example.customview.edit_screen.DrawingSection
 import com.example.customview.edit_screen.DrawingViewModel
 import com.example.customview.edit_screen.allColors
@@ -55,7 +55,7 @@ fun EditorScreen() {
                 onCanvasCleared = {
                     viewModel.onAction(DrawingAction.OnClearCanvasClick)
                 },
-                onImageRotated = {
+                onImageSaved = {
                     val bitMap = composeView.drawToBitmap()
                     scope.launch {
                         val fileName = "output_${System.currentTimeMillis()}.jpg"
@@ -65,6 +65,9 @@ fun EditorScreen() {
                             outputFileName = fileName
                         )
                     }
+                },
+                onChangeDrawingMode = {
+                    viewModel.onAction(DrawingAction.OnDrawModeChanged(DrawingMode.ERASER))
                 }
             )
         }
