@@ -1,20 +1,19 @@
 package com.example.customview.edit_screen
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.util.fastForEach
 import kotlin.math.abs
@@ -25,7 +24,6 @@ fun DrawingCanvas(
     paths: List<PathData>,
     currentPath: PathData?,
     onAction: (DrawingAction) -> Unit,
-    drawingMode: DrawingMode,
     modifier: Modifier = Modifier,
 ) {
 
@@ -48,20 +46,18 @@ fun DrawingCanvas(
                     }
                 )
             }
+            .graphicsLayer(alpha = 0.99f)
     ) {
-
         paths.fastForEach { pathData ->
             drawPath(
                 path = pathData.paths,
                 color = pathData.color,
-                drawingMode = drawingMode
             )
         }
         currentPath?.let {
             drawPath(
                 path = it.paths,
                 color = it.color,
-                drawingMode = drawingMode
             )
         }
     }
@@ -73,7 +69,6 @@ private fun DrawScope.drawPath(
     path: List<Offset>,
     color: Color,
     thickness: Float = 20f,
-    drawingMode: DrawingMode
 ) {
     val smoothedPath = Path().apply {
         if (path.isNotEmpty()) {
@@ -97,7 +92,7 @@ private fun DrawScope.drawPath(
             }
         }
     }
-    if (drawingMode == DrawingMode.ERASER) {
+    if (color == Color.Transparent) {
         drawPath(
             path = smoothedPath,
             color = Color.Transparent,
@@ -105,7 +100,8 @@ private fun DrawScope.drawPath(
                 width = thickness,
                 cap = StrokeCap.Round,
                 join = StrokeJoin.Round
-            )
+            ),
+            blendMode = BlendMode.Clear
         )
     } else {
         drawPath(

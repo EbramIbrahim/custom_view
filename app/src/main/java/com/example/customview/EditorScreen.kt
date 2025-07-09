@@ -16,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.customview.edit_screen.CanvasControllerItem
 import com.example.customview.edit_screen.DrawingAction
-import com.example.customview.edit_screen.DrawingMode
 import com.example.customview.edit_screen.DrawingSection
 import com.example.customview.edit_screen.DrawingViewModel
 import com.example.customview.edit_screen.allColors
@@ -66,8 +65,8 @@ fun EditorScreen() {
                         )
                     }
                 },
-                onChangeDrawingMode = {
-                    viewModel.onAction(DrawingAction.OnDrawModeChanged(DrawingMode.ERASER))
+                onChangeDrawingMode = { drawingMode ->
+                    viewModel.onAction(DrawingAction.OnDrawModeChanged(drawingMode))
                 }
             )
         }

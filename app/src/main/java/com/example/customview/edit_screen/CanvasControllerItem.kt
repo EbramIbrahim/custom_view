@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEach
 
@@ -29,7 +28,7 @@ fun ColumnScope.CanvasControllerItem(
     onSelectedColor: (Color) -> Unit,
     onCanvasCleared: () -> Unit,
     onImageSaved: () -> Unit,
-    onChangeDrawingMode: () -> Unit,
+    onChangeDrawingMode: (DrawingMode) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -81,7 +80,7 @@ fun ColumnScope.CanvasControllerItem(
 
         Button(
             onClick = {
-                onChangeDrawingMode()
+                onChangeDrawingMode(DrawingMode.ERASER)
             }
         ) {
             Text("Eraser")

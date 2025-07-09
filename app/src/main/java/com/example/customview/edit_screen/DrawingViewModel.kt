@@ -16,13 +16,14 @@ data class DrawingState(
     val currentPath: PathData? = null,
     val paths: List<PathData> = emptyList(),
     val rotation: Float = 0f,
-    val drawingMode: DrawingMode = DrawingMode.BRUSH
+    val drawingType: DrawingMode = DrawingMode.BRUSH
 )
+
 
 data class PathData(
     val id: String,
     val color: Color,
-    val paths: List<Offset>
+    val paths: List<Offset>,
 )
 
 val allColors = listOf(
@@ -52,7 +53,6 @@ class DrawingViewModel : ViewModel() {
     private val _drawingState = MutableStateFlow(DrawingState())
     val drawingState = _drawingState.asStateFlow()
 
-
     fun onAction(action: DrawingAction) {
         when (action) {
             DrawingAction.OnClearCanvasClick -> onClearCanvasClick()
@@ -66,7 +66,8 @@ class DrawingViewModel : ViewModel() {
     }
 
     private fun onDrawModeChanged(mode: DrawingMode) {
-        _drawingState.update { it.copy(drawingMode = mode) }
+        _drawingState.update { it.copy(drawingType = mode) }
+
     }
 
     private fun onRotationChanged(rotation: Float) {
@@ -92,8 +93,8 @@ class DrawingViewModel : ViewModel() {
             it.copy(
                 currentPath = PathData(
                     id = System.currentTimeMillis().toString(),
-                    color = it.selectedColor,
-                    paths = emptyList()
+                    color = if (it.drawingType == DrawingMode.ERASER) Color.Transparent else it.selectedColor,
+                    paths = emptyList(),
                 )
             )
         }

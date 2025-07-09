@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.FileDescriptor
@@ -22,6 +24,11 @@ object BitmapUtil {
         return BitmapFactory.decodeStream(inputStream, null, options) ?: throw IllegalArgumentException(
             "Failed to load bitmap"
         )
+    }
+
+    fun Context.drawableResourceToBitmap(drawableResId: Int): Bitmap {
+        val drawable = ContextCompat.getDrawable(this, drawableResId)
+        return drawable?.toBitmap() ?: throw IllegalArgumentException("Invalid drawable resource")
     }
 
     suspend fun saveImageToExternalStorage(
